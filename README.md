@@ -15,8 +15,6 @@ It is aligned with:
 - NIST SP 800-161 (Supply Chain Risk Management)
 - ISO 28000 (Supply Chain Security Management)
 
----
-
 ## Objectives
 
 - Understand how vulnerabilities enter through third-party software
@@ -25,118 +23,111 @@ It is aligned with:
 - Perform vulnerability scanning using industry tools
 - Learn detection and response workflows
 
----
+## Dependencies Installation
 
-## Lab Scenarios
+Before running the lab, install the required dependencies.
 
-### 1. Lab Environment Setup
+### System Packages
+sudo apt update
+sudo apt install docker.io docker-compose python3-pip curl git jq -y
 
-This script prepares the cybersecurity lab environment:
+### Enable Docker
+sudo systemctl start docker
+sudo systemctl enable docker
+sudo usermod -aG docker $USER
 
-- Installs Docker
-- Configures OSQuery for monitoring
-- Sets up Anchore Engine for scanning
-- Deploys Clair for vulnerability analysis
-- Downloads vulnerable container images for testing
+Restart terminal after this step.
 
----
+### Install Security Tools
 
-### 2. Supply Chain Attack Simulation (Industrial OT Scenario)
+Trivy:
+curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sudo sh
 
-This scenario simulates an industrial control system (SmartPump Inc.) compromise.
+Grype:
+curl -sSfL https://raw.githubusercontent.com/anchore/grype/main/install.sh | sudo sh
 
-It demonstrates:
+## What Each Script Does
+
+### 1. setup.sh
+
+This script prepares the full lab environment.
+
+It installs:
+- Docker and dependencies
+- OSQuery for system monitoring
+- Anchore Engine for container scanning
+- Clair vulnerability scanner
+- Vulnerable Docker images
+
+Purpose: Builds the base DevSecOps + supply chain security lab.
+
+### 2. real-case-scenario.sh
+
+This script simulates a real-world industrial supply chain attack.
+
+It models a SmartPump industrial system and demonstrates:
 - Third-party dependency risks
 - Malicious analytics agent simulation
 - Insecure supply chain ingestion
 - Industrial protocol exposure (Modbus concept)
 
-Security activities included:
+Security actions:
 - Risk assessment (NIST SR controls)
 - Runtime monitoring using OSQuery
 - Vulnerability scanning using Grype
 
----
+Purpose: Demonstrates OT/ICS supply chain attack scenarios.
 
-### 3. Vulnerable Application Deployment (Equifax Case Study)
+### 3. Equifax_Breach.sh
 
-This scenario deploys a vulnerable web application based on Apache Struts 2.3.32.
+This script deploys a vulnerable web application using:
+- Apache Struts 2.3.32
+- Tomcat 8.5
+
+It simulates a CVE scenario similar to the Equifax breach.
 
 It demonstrates:
-- Real-world CVE exploitation model (similar to Equifax breach)
-- Containerized vulnerable application deployment
+- CVE-based exploitation model
+- Container-based vulnerable deployment
 - Image scanning using Trivy
 
----
+Purpose: Shows real-world vulnerability exploitation via insecure dependencies.
 
 ## Tools Used
 
 - Docker
 - Trivy (container vulnerability scanner)
 - Grype (software composition analysis)
-- Anchore Engine (policy-based image scanning)
 - Clair (CVE detection engine)
-- OSQuery (system and container monitoring)
-
----
+- OSQuery (system monitoring)
 
 ## Architecture
 
-The lab follows a layered model:
-
-- Infrastructure layer (Docker environment)
-- Supply chain layer (external dependencies)
-- Application layer (vulnerable services)
-- Monitoring layer (security tools)
-
----
-
-## How to Run
-
-Step 1: Clone the repository
-git clone https://github.com/your-username/supply-chain-security-lab.git
-
-Step 2: Move into scripts folder
-cd supply-chain-security-lab/scripts
-
-Step 3: Run lab setup
-bash 01-lab-setup.sh
-
-Step 4: Run supply chain simulation
-bash 02-supply-chain-simulation.sh
-
-Step 5: Deploy vulnerable application
-bash 03-vulnerable-struts-demo.sh
-
----
+- Infrastructure Layer → Docker environment
+- Supply Chain Layer → External dependencies
+- Application Layer → Vulnerable services
+- Monitoring Layer → Security tools
 
 ## Disclaimer
 
-This project is strictly for educational and research purposes only.
+This project is for educational and research purposes only.
 
-Do not run in production environments.
-
----
+Do not use in production environments.
 
 ## Skills Demonstrated
 
 - Supply Chain Risk Management
 - DevSecOps security practices
 - Container security analysis
-- Vulnerability scanning and SCA
+- Vulnerability scanning (SCA)
 - SOC monitoring and detection
 - OT/ICS cybersecurity fundamentals
-
----
 
 ## Standards Referenced
 
 - NIST SP 800-161
 - ISO 28000
-- OWASP Container Security Guidelines
 - CVE-based vulnerability modeling
-
----
 
 ## Author
 
